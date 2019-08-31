@@ -1,0 +1,27 @@
+<div class="container">
+  <table id="ankit" class="table table-striped">
+    <thead>
+          <tr>
+            <th scope="col">Username</th>
+            <th scope="col">Submitted Date</th>
+            <th scope="col">Category</th>
+            <th scope="col">Actions</th>
+          </tr>
+    </thead>
+    <tbody>
+{{#each admin}}  
+<tr>
+        
+        <td>{{this.username}}</td>
+        <td>{{this.date}}</td>
+        <td>{{this.category}}</td>
+        <td><button type="button" class="btn btn-info"><a href="google.com">View Post</a></button>&nbsp;<button type="button" class="btn btn-success"><a href="google.com">Approve</a></button>&nbsp;<button type="button" class="btn btn-danger"><a href="google.com">Delete</a></button></td>
+        
+        
+<tr/>
+{{/each}}
+      </tbody>
+  </table>
+</div>
+    
+      
