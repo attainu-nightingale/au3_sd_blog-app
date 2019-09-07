@@ -27,18 +27,29 @@ app.use(express.urlencoded({ extended : false}));
 
 
 app.post("/Login",function(req,res){
-    db.collection("admin").find().toArray(function(err,result){
-        if (err) throw err;
-        for(var i=0;i<result.length;i++){
-            if(req.body.email == result[i].email && req.body.password == result[i].password){
-                req.session.loggedin = true;
-            }
-        }
-        console.log("logged in");
+    db.collection("admin").find({name:req.body.name,password: req.body.password}).toArray(function(err,result){
+        
+        //if (err) throw err;
+        //for(var i=0;i<result.length;i++){
+          //  if(req.body.email == result[i].email && req.body.password == result[i].password){
+            //    req.session.loggedin = true;
+            //}
+        //}
+        console.log("logged in",result);
         //res.redirect("file to be connected")
     })
    
 });
+
+
+app.post("/Signup",function(req,res){
+     db.collection("newUser").insertOne(req.body,function(err,result){
+         if (err) throw err;
+         console.log(req.body);
+//         //res.redirect("redirecting file");
+     });
+//      //console.log(req.body);
+  });
 
 
 app.get("/user",function(req,res){
@@ -53,6 +64,20 @@ app.get("/user",function(req,res){
 });
 
 
+app.post("/Signin",function(req,res){
+    db.collection("newUser").insertOne(req.body,function(err,result){
+        if (err) throw err;
+        console.log(req.body);
+//         //res.redirect("redirecting file");
+    });
+//      //console.log(req.body);
+ });
+
+
 app.listen(1000 , function(){
     console.log("Listening on 1000");
 })
+
+
+
+
