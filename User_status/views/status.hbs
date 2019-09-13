@@ -1,0 +1,28 @@
+<div class="container">
+  <table class="table table-striped">
+    <thead>
+          <tr>
+            <th scope="col">Category</th>
+            <th scope="col">Submitted Date</th>
+            <th scope="col">Approve Status</th>
+            <th scope="col">Reject Status</th>
+            <th scope="col">Approve Status</th>
+            <th scope="col">Request for change</th>
+          </tr>
+    </thead>
+    <tbody>
+        {{#each admin}}  
+        {{!-- {{#unless this.status}} --}}
+
+           <tr>
+        
+              <td>{{this.category}}</td>
+              <td>{{this.date}}</td>
+              <td>{{#is this.status 1}}Approved{{/is}}{{#is this.status -2}}Rejected{{/is}}{{#is this.status 0}}Pending{{/is}}</td>
+              <td>{{#is this.status -1}}{{this.recentUpdate}}{{/is}}</td>        
+            <tr/>
+        {{!-- {{/unless}} --}}
+        {{/each}}
+    </tbody>
+  </table>
+</div>

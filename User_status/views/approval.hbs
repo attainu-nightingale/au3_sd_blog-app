@@ -1,0 +1,26 @@
+<div class="container">
+  <table class="table table-striped">
+    <thead>
+          <tr>
+            <th scope="col">Heading</th>
+            <th scope="col">Category</th>
+            <th scope="col">Submitted Date</th>
+            <th scope="col">Approval</th>
+          </tr>
+    </thead>
+    <tbody>
+        {{#each admin}}  
+        {{!-- {{#unless this.status}} --}}
+
+           <tr>
+        
+              <td>{{this.heading}}</td>
+              <td>{{this.category}}</td>
+              <td>{{this.date}}</td>
+              <td>Blog Approved</td>        
+            <tr/>
+        {{!-- {{/unless}} --}}
+        {{/each}}
+    </tbody>
+  </table>
+</div>
