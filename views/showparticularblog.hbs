@@ -1,0 +1,53 @@
+<div class="container">
+  {{#each data}}
+    <div class="content">
+    <h1 style="position: relative; top: 80px; font-family:'Roboto', sans-serif; left : 50px;">{{this.heading}}</h1>
+    <p style="position: relative; top: 70px; left : 60px; font-size:25px;">{{this.username}}</p>
+    <p style="position: relative; top: 50px; left : 60px; font-weight:lighter">{{this.date}}</p>
+    <img src="../{{this.headImg}}" style="position: relative; top: 80px; left : 60px ;width : 100%; height:500px;">
+
+    <div style="font-family: 'Dosis', sans-serif ; font-size:25px; position: relative; top: 80px; left:45px;">
+            {{{this.body}}}
+        </div>
+         
+        <div style="display:inline-block">
+          {{#each this.images}}
+          <img src="../{{.}}" style="position: relative; top: 80px; left : 60px ;width 33%: ; height:200px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          {{/each}}
+        </div><br>
+        <div style="text-align:right;">
+    <a href="/user/posts/{{this._id}}/edit" class="btn btn-success" style="position: relative; top: 80px; left:-80px;">Edit</a>
+       <form method="post" action="/user/posts/{{this._id}}?_method=delete"><br>
+         <button class="btn btn-danger" style="position: relative; top: 18px; left:0px;">Delete</button>
+        </form>
+        </div>
+    </div>
+    {{/each}}
+</div>
+
+<div class="container" style="position: relative ; top:20px; left : 40px;">
+   <p style="font-size: 30px;">Comments</p>
+    <form action="/user/posts/{{blogid}}" method="POST">
+    <input type="hidden" value="{{blogid}}" class="userId" name="blogid">
+        {{!-- {{#each user}} --}}
+    {{!-- <input type="text" value="{{user.username}}" class="userd" name="username">
+    <input type="text" value="{{user._id}}" class="userd" name="userid"> --}}
+    {{!-- {{/each}} --}}
+    <input type="hidden" value="{{date}}" class="userId" name="date">
+    <textarea rows="2" cols="20" class="form-control commenttext" placeholder="Enter Your Comment Here" name="text"></textarea>
+    <button class="btn btn-outline-success submit" style="position: relative;top:5px;" type="submit">Submit</button>
+    </form>
+<br>
+ {{#each comment}}
+  <div class="card">
+  <div class="card-body">
+    <div>
+    <img src="https://cdn3.iconfinder.com/data/icons/users-retro/60/50_-Blank_Profile-_user_people_group_team-512.png" alt="This is Image" style="height:50px;">
+    <h5 class="card-title">{{this.username}}</h5>
+    </div>
+    <p class="card-text">{{text}} <span id="date" style="float:right; font-weight:lighter">{{this.date}}</span></p>
+  </div>
+</div>
+  <br>
+  {{/each}}
+</div>

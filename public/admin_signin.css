@@ -1,0 +1,14 @@
+body,html {
+    background-image: url('http://hdwpro.com/wp-content/uploads/2018/03/Floral-Blur-Background.jpg');
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#profile-img {
+    height:180px;
+}
+.h-80 {
+    height: 80% !important;
+}

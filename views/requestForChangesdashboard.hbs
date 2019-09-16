@@ -5,14 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{{title}}</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Dosis:300|Roboto&display=swap" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-    <script src="https://kit.fontawesome.com/fa0348eda9.js"></script>
     <link rel="stylesheet" href="{{style}}">
 </head>
-     <body style="background-color: #e6ecf0">
+
+{{!-- Header file --}}
+
+     <body style="background-color: #CCCCFF">
 <nav class="fixed-top">
     <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #3C2970">
   <a class="navbar-brand" href="/user/posts">BlogApp</a>
@@ -26,9 +28,6 @@
         <li class="nav-item">
         <a class="nav-link" href="/user/signout">SignOut</a>
         </li>
-        <li class="nav-item">
-        <a class="nav-link" href="/user/{{userId}}/dashboard">Dashboard</a>
-        </li>
         {{else}}
       <li class="nav-item">
         <a class="nav-link" href="/user/signup.html">SignUp</a>
@@ -38,7 +37,6 @@
       </li>
       {{/if}}
     </ul>
-
     <form class="form-inline my-2 my-lg-0" action="/user/posts" method="GET">
       <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" name="search">
       <button class="btn my-2 my-sm-0" type="submit" style="background-color: #E5D4ED">Search</button>
@@ -58,16 +56,51 @@
         </div>
     {{/if}}
     </div>
- <div class="container-fluid">
-   {{{body}}}
- </div>
 
-    {{!-- <footer id="sticky-footer" class="py-4 bg-dark text-white-50">
-   <div class="container text-center">
-     <small>Copyrights &copy; Blog App</small>
-   </div>
- </footer> --}}
+     {{!-- ///--------------- bootstrap side navbar--------------- --}}
+        
+       
+      <div class="sidebar" style="background-color: #e6ecf0">
+        <a href="#home">Home</a>
+        <a href="/user/{{userId}}/dashboard">Dashboard</a>
+        <a  href="/user/{{userId}}/dashboard/statusApprove">Approved</a>
+        <a href="/user/{{userId}}/dashboard/reject">Reject</a>
+        <a href="/user/{{userId}}/dashboard/underReview">Pending</a>
+        <a href="/user/{{userId}}/dashboard/requestForChanges" class="active">Changes</a>
+        <a href="/user/{{userId}}/dashboard/showallblog">Show Blog</a>
+        <a href="/user/{{userId}}/dashboard/Editallblog" >Edit Blog</a>
+        <a href="/user/{{userId}}/dashboard/Deleteallblog" >Delete Blog</a>
+      </div>
 
-    <script src={{script}}></script>
-</body>
+<div class="container" style="position: relative; top:70px;left:50px;">
+    <table class="table table-striped" border="2px">
+    <thead class="thead-dark">
+          <tr>
+            <th scope="col">Heading</th>
+            <th scope="col">Category</th>
+            <th scope="col">Submitted Date</th>
+             <th scope="col">Status</th>
+             <th scope="col">Message</th>
+            <th scope="col">Link</th>
+          </tr>
+    </thead>
+    <tbody>
+        {{#each data}}
+        {{#ifCond this.status -1 }}  
+           <tr>   
+              <td>{{this.heading}}</td>
+              <td>{{this.category}}</td>
+              <td>{{this.date}}</td>
+              <td style="color: mediumvioletred">Changes Required</td>
+              <td style="color: mediumvioletred">{{this.changeRequest}}</td>
+              <td><a href="/user/posts/{{this._id}}/edit">Visit</a></td>           
+            <tr/>
+            {{/ifCond}}
+        {{/each}}
+    </tbody>
+  </table>
+</div>
+
+
+     </body>
 </html>

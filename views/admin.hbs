@@ -1,0 +1,74 @@
+<div class="container">
+  <table class="table table-striped">
+    <thead>
+          <tr>
+            <th scope="col">Username</th>
+            <th scope="col">Submitted Date</th>
+            <th scope="col">Category</th>
+            <th scope="col">Actions</th>
+          </tr>
+    </thead>
+    <tbody>
+        {{#each admin}}  
+        {{!-- {{#unless this.status}} --}}
+
+           <tr>
+        
+              <td>{{this.username}}</td>
+              <td>{{this.date}}</td>
+              <td>{{this.category}}</td>
+              <td>
+                 <button type="button" value= "{{this._id}}" class="btn btn-info"><a href="">View Post</a></button>&nbsp;
+                 <button type="button" value= "{{this._id}}" class="btn btn-success approve">Approve</button>&nbsp;
+                 <button type="button" value= "{{this._id}}" class="btn btn-danger delete">Reject</a></button>&nbsp;
+                 <form action="/admin/changerequest/{{this._id}}" method="POST">    
+                     <div class="form-group">
+                          <label for="exampleFormControlTextarea1">Example textarea</label>
+                          <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="changeRequest" ></textarea>
+                     </div>
+                     <input type="hidden" id="custId" name="status" value=-1>
+                     <input type="hidden" id="custId" name="recentUpdate" value=0>
+                     <button type="submit" class="btn btn-primary mb-2 change">Request for change</button>
+                 </form>
+              </td>        
+            <tr/>
+        {{!-- {{/unless}} --}}
+        {{/each}}
+    </tbody>
+  </table>
+</div>
+
+<script>
+    // AJAX request for Delete Button
+$('.delete').on('click', function(){
+    var id = $(this).attr('value');
+    
+$.ajax({
+url: "/admin/adminHomepage/deleteblog/"+id,
+type: "PUT",
+dataType: "json",
+success: function(data){
+    console.log("Deleted...");
+}
+})
+location.reload();
+})
+
+// AJAX request for Approve Button
+
+$('.approve').on('click', function(){
+    var id = $(this).attr('value');
+    
+$.ajax({
+url: "/admin/adminHomepage/approveblog/"+id,
+type: "PUT",
+data: id,
+dataType: "json",
+success: function(data){
+    
+    console.log("Approved...");
+}
+})
+location.reload();
+})
+</script>
