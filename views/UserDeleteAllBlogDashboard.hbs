@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{title}}</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Dosis:300|Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{style}}">
+</head>
+
+{{!-- Header file --}}
+
+     <body style="background-color: #CCCCFF">
+<nav class="fixed-top">
+    <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #3C2970">
+  <a class="navbar-brand" href="/user/posts">BlogApp</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+    <ul class="navbar-nav mr-auto">
+      {{#if loggedIn}}
+        <li class="nav-item">
+        <a class="nav-link" href="/user/signout">SignOut</a>
+        </li>
+        {{else}}
+      <li class="nav-item">
+        <a class="nav-link" href="/user/signup.html">SignUp</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/user/signup.html">SignIn</a>
+      </li>
+      {{/if}}
+    </ul>
+    <form class="form-inline my-2 my-lg-0" action="/user/posts" method="GET">
+      <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" name="search">
+      <button class="btn my-2 my-sm-0" type="submit" style="background-color: #E5D4ED">Search</button>
+    </form>
+  </div>
+</nav>
+</nav>
+  <div class="container" style="position: relative;top:65px;left:45px;">
+    {{#if success}}
+       <div class="alert alert-success" role="alert">
+        {{success}}
+       </div>
+    {{/if}}
+    {{#if error}}
+       <div class="alert alert-danger" role="alert">
+          {{error}}
+        </div>
+    {{/if}}
+    </div>
+
+     {{!-- ///--------------- bootstrap side navbar--------------- --}}
+        
+       
+       <div class="sidebar" style="background-color: #e6ecf0">
+        <a href="#home">Home</a>
+        <a href="/user/{{userId}}/dashboard">Dashboard</a>
+        <a  href="/user/{{userId}}/dashboard/statusApprove">Approved</a>
+        <a href="/user/{{userId}}/dashboard/reject">Reject</a>
+        <a href="/user/{{userId}}/dashboard/underReview">Pending</a>
+        <a href="/user/{{userId}}/dashboard/requestForChanges">Changes</a>
+        <a href="/user/{{userId}}/dashboard/showallblog">Show Blog</a>
+        <a href="/user/{{userId}}/dashboard/Editallblog" >Edit Blog</a>
+        <a href="/user/{{userId}}/dashboard/Deleteallblog" class="active">Delete Blog</a>
+      </div>
+
+     {{!-- Cards  --}}
+   <div class="container" style="position: relative;top:90px;left:90px;">
+        <div class="row">
+           {{#each data}}
+           <div class="col-md-4">
+             {{!-- <a href="/user/posts/{{this._id}}/delete"> --}}
+            <div class="card" style="margin-left :10px; margin-bottom:50px;border-radius: 15px;transition: 0.3s;">
+            <img class="card-img-top" src="/{{this.headImg}}" alt="Card image cap" style="border-radius: 15px 15px 0 0;">
+            <div class="card-body">
+            <h5 class="card-title text-truncate" style="max-width: 250px;">
+                <font face = "Bedrock" size = "5">{{this.heading}}</font></h5>
+            <img src="data:image/png;base64,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" style="width: 20px;height:20px"><span style="position:relative;top:8px;font-weight:lighter">{{this.date}}</span></img>
+            <hr>
+            <h6>Author: <span style="font-weight:lighter">{{{this.username}}}</span></h6>
+            <h6>Category: <span style="font-weight:lighter">{{{this.category}}}</span></h6>
+            <center><a href="/user/posts/{{this._id}}/delete" class="btn btn-danger mt-2 btn-block">Delete</a></center>
+         </div>
+       </div>
+       {{!-- </a> --}}
+       </div>
+  
+           {{/each}}
+           </div>
+      </div>
+   
+
+      </body>
+</html>

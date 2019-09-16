@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{title}}</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Dosis:300|Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{style}}">
+</head>
+
+{{!-- Header file --}}
+
+     <body style="background-color: #CCCCFF">
+<nav class="fixed-top">
+    <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #3C2970">
+  <a class="navbar-brand" href="/user/posts">BlogApp</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+    <ul class="navbar-nav mr-auto">
+      {{#if loggedIn}}
+        <li class="nav-item">
+        <a class="nav-link" href="/user/signout">SignOut</a>
+        </li>
+        {{else}}
+      <li class="nav-item">
+        <a class="nav-link" href="/user/signup.html">SignUp</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/user/signup.html">SignIn</a>
+      </li>
+      {{/if}}
+    </ul>
+    <form class="form-inline my-2 my-lg-0" action="/user/posts" method="GET">
+      <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" name="search">
+      <button class="btn my-2 my-sm-0" type="submit" style="background-color: #E5D4ED">Search</button>
+    </form>
+  </div>
+</nav>
+</nav>
+  <div class="container" style="position: relative;top:65px;left:45px;">
+    {{#if success}}
+       <div class="alert alert-success" role="alert">
+        {{success}}
+       </div>
+    {{/if}}
+    {{#if error}}
+       <div class="alert alert-danger" role="alert">
+          {{error}}
+        </div>
+    {{/if}}
+    </div>
+
+     {{!-- ///--------------- bootstrap side navbar--------------- --}}
+        
+       
+       <div class="sidebar" style="background-color: #e6ecf0">
+        <a href="#home">Home</a>
+        <a href="/user/{{userId}}/dashboard" class="active">Dashboard</a>
+        <a  href="/user/{{userId}}/dashboard/statusApprove">Approved</a>
+        <a href="/user/{{userId}}/dashboard/reject">Reject</a>
+        <a href="/user/{{userId}}/dashboard/underReview">Pending</a>
+        <a href="/user/{{userId}}/dashboard/requestForChanges">Changes</a>
+        <a href="/user/{{userId}}/dashboard/showallblog">Show Blog</a>
+        <a href="/user/{{userId}}/dashboard/Editallblog" >Edit Blog</a>
+        <a href="/user/{{userId}}/dashboard/Deleteallblog" >Delete Blog</a>
+      </div>
+      
+      
+   
+
+      {{!-- Graph Droopdown --}}
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4" style="position: relative;top:50px;">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2" style="position:relative;right:-500px;">Dashboard</h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+         <select class="browser-default custom-select custom-select-sm mb-3" id='graph' onchange="dropdownValue()">
+           <option selected>Select Graph</option>
+            <option value="bar">Bar Graph</option>
+           <option value="pie">Pie Chart</option>
+           <option value="line">Line</option>
+           <option value="doughnt">Doughnt & Pie</option>
+           <option value="horizontal">Horizontal Bar</option>
+         </select>
+        </div>
+      </div>
+       
+          {{!-- Graph Starts here --}}
+
+      <canvas id="myChart" width="900" height="380">
+      </canvas>
+      </div>
+    </main>
+  </div>
+</div>
+
+
+   
+   {{!-- JavaScript File --}}
+   <script>
+   var mychart = document.getElementById('myChart').getContext('2d');
+   var userchart;
+    //------- Heading array
+    var heading = [];
+     {{#each data}}
+         heading.push('{{{this.heading}}}')
+     {{/each}}
+     //---------- Views Array
+     var views = [];
+     {{#each data}}
+         views.push({{{this.views}}})
+     {{/each}}
+     console.log(views);
+    // Global Options
+    Chart.defaults.global.defaultFontFamily = 'Lato';
+    Chart.defaults.global.defaultFontSize = 18;
+    Chart.defaults.global.defaultFontColor = '#777';
+
+  var userchart = new Chart(mychart , {
+     type : 'bar',
+     data : {
+        labels : heading,
+        datasets : [{
+            label : 'No. Of Views',
+            data : views,
+            backgroundColor:[
+                'rgba(255, 99, 132, 0.6)',
+                'rgba(54, 162, 235, 0.6)',
+                'rgba(255, 206, 86, 0.6)',
+                'rgba(75, 192, 192, 0.6)',
+                'rgba(153, 102, 255, 0.6)',
+                'rgba(255, 159, 64, 0.6)',
+                'rgba(255, 99, 132, 0.6)'
+              ],
+              borderWidth:1,
+              borderColor:'#777',
+              hoverBorderWidth: 1,
+              hoverBorderColor:'#000'
+        }]
+    },
+    options : {
+        title : {
+            display : true,
+            text : 'No. of Views of Blog',
+            fontSize : 25,
+        },
+        legend : {
+            display : true,
+            position : 'right',
+            labels : {
+                fontColor : '#000',
+            }
+        }
+    }
+});
+
+function dropdownValue() {
+    var e = document.getElementById("graph");
+    var strUser = e.options[e.selectedIndex].value;
+    if(strUser == 'bar'){
+        userchart.destroy();
+        userchart = new Chart(mychart , {
+            type : 'bar',
+            data : {
+                labels : heading,
+                datasets : [{
+                    label : 'No. Of Views',
+                    data : views,
+                    backgroundColor:[
+                        'rgba(255, 99, 132, 0.6)',
+                        'rgba(54, 162, 235, 0.6)',
+                        'rgba(255, 206, 86, 0.6)',
+                        'rgba(75, 192, 192, 0.6)',
+                        'rgba(153, 102, 255, 0.6)',
+                        'rgba(255, 159, 64, 0.6)',
+                        'rgba(255, 99, 132, 0.6)'
+                      ],
+                      borderWidth:1,
+                      borderColor:'#777',
+                      hoverBorderWidth: 1,
+                      hoverBorderColor:'#000'
+                }]
+            },
+            options : {
+                title : {
+                    display : true,
+                    text : 'No. of Views of Blog',
+                    fontSize : 25,
+                },
+                legend : {
+                    display : true,
+                    position : 'right',
+                    labels : {
+                        fontColor : '#000',
+                    }
+                }
+            }
+        });
+    }
+    else if(strUser == 'pie'){
+        userchart.destroy();
+        userchart = new Chart(mychart , {
+            type : 'pie',
+            data : {
+                labels : heading,
+                datasets : [{
+                    label : 'No. Of Views',
+                    data : views,
+                    backgroundColor:[
+                        'rgba(255, 99, 132, 0.6)',
+                        'rgba(54, 162, 235, 0.6)',
+                        'rgba(255, 206, 86, 0.6)',
+                        'rgba(75, 192, 192, 0.6)',
+                        'rgba(153, 102, 255, 0.6)',
+                        'rgba(255, 159, 64, 0.6)',
+                        'rgba(255, 99, 132, 0.6)'
+                      ],
+                      borderWidth:1,
+                      borderColor:'#777',
+                      hoverBorderWidth: 1,
+                      hoverBorderColor:'#000'
+                }]
+            },
+            options : {
+                title : {
+                    display : true,
+                    text : 'No. of Views of Blog',
+                    fontSize : 25,
+                },
+                legend : {
+                    display : true,
+                    position : 'right',
+                    labels : {
+                        fontColor : '#000',
+                    }
+                }
+            }
+        });
+    }
+    else if(strUser == 'line'){
+        userchart.destroy();
+        userchart = new Chart(mychart , {
+            type : 'line',
+            data : {
+                labels : heading,
+                datasets : [{
+                    label : 'No. Of Views',
+                    data : views,
+                    backgroundColor:[
+                        'rgba(255, 99, 132, 0.6)',
+                        'rgba(54, 162, 235, 0.6)',
+                        'rgba(255, 206, 86, 0.6)',
+                        'rgba(75, 192, 192, 0.6)',
+                        'rgba(153, 102, 255, 0.6)',
+                        'rgba(255, 159, 64, 0.6)',
+                        'rgba(255, 99, 132, 0.6)'
+                      ],
+                      borderWidth:1,
+                      borderColor:'#777',
+                      hoverBorderWidth: 1,
+                      hoverBorderColor:'#000'
+                }]
+            },
+            options : {
+                title : {
+                    display : true,
+                    text : 'No. of Views of Blog',
+                    fontSize : 25,
+                },
+                legend : {
+                    display : true,
+                    position : 'right',
+                    labels : {
+                        fontColor : '#000',
+                    }
+                }
+            }
+        });
+    }
+    else if(strUser == 'doughnt'){
+        userchart.destroy();
+        userchart = new Chart(mychart , {
+            type : 'doughnut',
+            data : {
+                labels : heading,
+                datasets : [{
+                    label : 'No. Of Views',
+                    data : views,
+                    backgroundColor:[
+                        'rgba(255, 99, 132, 0.6)',
+                        'rgba(54, 162, 235, 0.6)',
+                        'rgba(255, 206, 86, 0.6)',
+                        'rgba(75, 192, 192, 0.6)',
+                        'rgba(153, 102, 255, 0.6)',
+                        'rgba(255, 159, 64, 0.6)',
+                        'rgba(255, 99, 132, 0.6)'
+                      ],
+                      borderWidth:1,
+                      borderColor:'#777',
+                      hoverBorderWidth: 1,
+                      hoverBorderColor:'#000'
+                }]
+            },
+            options : {
+                title : {
+                    display : true,
+                    text : 'No. of Views of Blog',
+                    fontSize : 25,
+                },
+                legend : {
+                    display : true,
+                    position : 'right',
+                    labels : {
+                        fontColor : '#000',
+                    }
+                }
+            }
+        });
+    }
+    else if(strUser == 'horizontal'){
+        userchart.destroy();
+        userchart = new Chart(mychart , {
+            type : 'horizontalBar',
+            data : {
+                labels : heading,
+                datasets : [{
+                    label : 'No. Of Views',
+                    data : views,
+                    backgroundColor:[
+                        'rgba(255, 99, 132, 0.6)',
+                        'rgba(54, 162, 235, 0.6)',
+                        'rgba(255, 206, 86, 0.6)',
+                        'rgba(75, 192, 192, 0.6)',
+                        'rgba(153, 102, 255, 0.6)',
+                        'rgba(255, 159, 64, 0.6)',
+                        'rgba(255, 99, 132, 0.6)'
+                      ],
+                      borderWidth:1,
+                      borderColor:'#777',
+                      hoverBorderWidth: 1,
+                      hoverBorderColor:'#000'
+                }]
+            },
+            options : {
+                title : {
+                    display : true,
+                    text : 'No. of Views of Blog',
+                    fontSize : 25,
+                },
+                legend : {
+                    display : true,
+                    position : 'right',
+                    labels : {
+                        fontColor : '#000',
+                    }
+                }
+            }
+        });
+    }
+  }
+   </script>
+    {{!-- <script src={{script}}></script> --}}
+</body>
+</html>

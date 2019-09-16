@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Dosis:300|Roboto&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{{style}}">
+</head>
+     <body style="background-color: #e6ecf0">
+<nav class="fixed-top">
+    <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #3C2970">
+  <a class="navbar-brand" href="/user/posts">BlogApp</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+    <ul class="navbar-nav mr-auto">
+      {{#if loggedIn}}
+        <li class="nav-item">
+        <a class="nav-link" href="/admin/adminHomepage/logout">SignOut</a>
+        </li>
+        {{else}}
+      <li class="nav-item">
+        <a class="nav-link" href="/user/signup.html">SignIn</a>
+      </li>
+      {{/if}}
+    </ul>
+
+    <form class="form-inline my-2 my-lg-0" action="/user/posts" method="GET">
+      <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" name="search">
+      <button class="btn my-2 my-sm-0" type="submit" style="background-color: #E5D4ED">Search</button>
+    </form>
+  </div>
+</nav>
+</nav>
+  <div class="container" style="position: relative;top:65px;left:45px;">
+    {{#if success}}
+       <div class="alert alert-success" role="alert">
+        {{success}}
+       </div>
+    {{/if}}
+    {{#if error}}
+       <div class="alert alert-danger" role="alert">
+          {{error}}
+        </div>
+    {{/if}}
+    </div>
+
+
+
+{!-- ///--------------- bootstrap side navbar--------------- --}}
+        
+       
+      <div class="sidebar" style="position: relative;left:15px; top:70px;">
+  <a class="active" href="#">Dashboard</a>
+  <a href="/admin/blog">Show Blogs</a>
+  <a href="/admin/delete">Delete Blogs</a>
+</div>
+​
+<div class="container" style="position: relative;top:-100px;left: 100px;">
+  <div class="card-deck">
+<div class="card bg-light mb-3" style="max-width: 18rem;">
+  <div style="background-color: #343a40;text-align: center;color:white" class="card-header">Total No. of Views</div>
+  <div style="background-color: #bce6f5" class="card-body">
+    <h1 style="text-align: center" class="card-title">{{views}}</h1>
+  </div>
+</div>
+​
+<div class="card bg-light mb-3" style="max-width: 18rem;">
+  <div style="background-color: #343a40;text-align: center;color:white" class="card-header" >Total No. of Blog Posted</div>
+  <div style="background-color: #bce6f5" class="card-body">
+    <h1 style="text-align: center" class="card-title">{{blog}}</h1>
+  </div>
+</div>
+​
+<div class="card bg-light mb-3" style="max-width: 18rem;">
+  <div style="background-color: #343a40;text-align: center;color:white" class="card-header">Total No. of Users</div>
+  <div style="background-color: #bce6f5" class="card-body">
+    <h1 style="text-align: center" class="card-title">{{user}}</h1>
+  </div>
+</div>
+​
+<div class="card bg-light mb-3" style="max-width: 18rem;">
+  <div style="background-color: #343a40;text-align: center;color:white" class="card-header" >Total No. of Authors</div>
+  <div style="background-color: #bce6f5" class="card-body">
+    <h1 style="text-align: center" class="card-title">{{author}}</h1>
+  </div>
+</div>
+</div>
+<hr>
+{{#if show}}
+<table  class="table table-info table-hover" style="border-radius: 15px">
+    <thead class="thead-dark">
+          <tr>
+            <th scope="col">Username</th>
+            <th scope="col">Title of Blog</th>
+            <th scope="col">Submitted Date</th>
+            <th scope="col">Category</th>
+            <th scope="col">Actions</th>
+          </tr>
+    </thead>
+    <tbody>
+        {{#each admin}}  
+        {{!-- {{#unless this.status}} --}}
+​
+           <tr>
+        
+              <td>{{this.username}}</td>
+              <td>{{this.heading}}</td>
+              <td>{{this.date}}</td>
+              <td>{{this.category}}</td>
+              <td>
+                 <button type="button" value= "{{this._id}}" class="btn btn-primary"><a href="/user/posts/{{this._id}}" style="color: white">View Post</a></button>&nbsp;
+                 <button type="button" value= "{{this._id}}" class="btn btn-success approve">Approve</button>&nbsp;
+                 <button type="button" value= "{{this._id}}" class="btn btn-danger delete">Reject</a></button>&nbsp;
+                 <form action="/admin/changerequest/{{this._id}}" method="POST">    
+                     <div class="form-group">
+                          <label for="exampleFormControlTextarea1"></label>
+                          <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" placeholder="Write feedback" name="changeRequest" style="width: 265px; background-color:#dce3de;border-radius: 10px" ></textarea>
+                     </div>
+                     <input type="hidden" id="custId" name="status" value=-1>
+                     <input type="hidden" id="custId" name="recentUpdate" value=0>
+                     <button type="submit" class="btn btn-secondary mb-2 change">Request for change</button>
+                 </form>
+              </td>        
+            <tr/>
+        {{!-- {{/unless}} --}}
+        {{/each}}
+    </tbody>
+  </table>
+  {{/if}}
+</div>
+
+
+
+<script>
+    // AJAX request for Delete Button
+$('.delete').on('click', function(){
+    var id = $(this).attr('value');
+    
+$.ajax({
+url: "/admin/adminHomepage/deleteblog/"+id,
+type: "PUT",
+dataType: "json",
+success: function(data){
+    console.log("Deleted...");
+}
+})
+location.reload();
+})
+
+// AJAX request for Approve Button
+
+$('.approve').on('click', function(){
+    var id = $(this).attr('value');
+    
+$.ajax({
+url: "/admin/adminHomepage/approveblog/"+id,
+type: "PUT",
+data: id,
+dataType: "json",
+success: function(data){
+    
+    console.log("Approved...");
+}
+})
+location.reload();
+})
+</script>
+
+
+
+
+
+</body>
+</html>
