@@ -41,21 +41,19 @@ router.get('/posts', function(req, res) {
     var db = req.app.locals.db;
     if(req.query.search){
         const regex = new RegExp(escapeRegex(req.query.search), 'gi');
-        db.collection('Blog').find({$or:[{$and:[{heading : regex} , {status : 1}]},{$and:[{category : regex} , {status : 1}]},{$and:[{username : regex} , {status : 1}]}]}).toArray(function(err , data){
+        db.collection('Blog').find({$and:[{heading : regex} , {status : 1}]}).toArray(function(err , data){
             if(err){
                 throw err;
             }
             else{
-            res.render('home.hbs' , {data : data , view : false , layout : false , style : '/userdashboard.css'}); 
-
+            res.render('home.hbs' , {data : data , layout : false , style : '/userdashboard.css'});               
             }
         }) 
     }
     else{
         db.collection('Blog').find({status : 1}).sort({date : -1}).limit(3).toArray(function(err , recent){ 
         db.collection('Blog').find({status : 1}).sort({views : -1}).limit(3).toArray(function(err , mostviewd){
-            // res.render('showBlog.hbs' , {data : data});
-            res.render('home.hbs' , {recent : recent ,mostviewd : mostviewd , view : true, layout : false , style : '/userdashboard.css' , loggedIn : req.session.loggedIn});     
+            res.render('home.hbs' , {recent : recent ,mostviewd : mostviewd , layout : false , style : '/userdashboard.css' , loggedIn : req.session.loggedIn});     
         }) 
     })
     }
@@ -84,6 +82,7 @@ router.get("/posts/:id" , function(req , res){
                                 throw err;
                             else {
                                 res.render('showparticularblog.hbs' , {
+                                    title: data.heading,
                                     data : data,
                                     blogid : req.params.id,
                                     comment : commentdata,
@@ -182,7 +181,6 @@ router.post('/postBlog', upload.array('ImgGal', 4), function (req, res, next) {
             throw error
     });
        res.redirect('/user/posts');
-    // res.json("Blog posted");
 });
 
 
@@ -222,8 +220,6 @@ router.put("/posts/:id" , function(req , res){
             throw err;
         else {
             res.json("Blog is Updated :)");
-            // res.send('vkjhdkvdkf');
-            // res.redirect("/"); 
             req.flash('success'  , 'Blog Updated Successfully');
         }
     });
@@ -288,8 +284,6 @@ router.post('/signin' , function(req , res) {
                     flag = true;
                     req.session.userId = data[i]._id;
                     req.session.username = data[i].username;
-                    // userId = req.session.userId;
-                    // username = req.session.username;
                     req.session.userdata = {
                         email : req.body.email,
                         password : req.body.password

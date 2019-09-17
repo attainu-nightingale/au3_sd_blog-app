@@ -107,10 +107,7 @@
     </thead>
     <tbody>
         {{#each admin}}  
-        {{!-- {{#unless this.status}} --}}
-​
            <tr>
-        
               <td>{{this.username}}</td>
               <td>{{this.heading}}</td>
               <td>{{this.date}}</td>
@@ -130,14 +127,11 @@
                  </form>
               </td>        
             <tr/>
-        {{!-- {{/unless}} --}}
         {{/each}}
     </tbody>
   </table>
   {{/if}}
 </div>
-
-
 
 <script>
     // AJAX request for Delete Button
