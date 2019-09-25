@@ -18,7 +18,7 @@ app.use(express.static('uploads'));
 app.use(express.static('routes'));
 app.use(methodOverride('_method'));
 
-var url = 'mongodb+srv://zanul:sa123456789@cluster0-31wmw.mongodb.net/Blog?retryWrites=true&w=majority';
+var url = '';
 var db, localdb;
 app.set("view engine" , hbs);
 mongoClient.connect(url , { useNewUrlParser: true ,  useUnifiedTopology: true } ,function(err , client){
