@@ -20,8 +20,6 @@ app.use(methodOverride('_method'));
 
 
 var url = 'mongodb+srv://BlogApp:Sa123456789@cluster0-qvfme.mongodb.net/test?retryWrites=true&w=majority';
-
-
 var db, localdb;
 app.set("view engine" , hbs);
 mongoClient.connect(url , { useNewUrlParser: true ,  useUnifiedTopology: true } ,function(err , client){
@@ -69,4 +67,6 @@ function escapeRegex(text) {
 app.use('/admin', admin);
 app.use('/user', user);
 
+
 app.listen(3000);
+
