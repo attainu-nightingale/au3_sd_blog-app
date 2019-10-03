@@ -1,14 +1,16 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
 
-
 * {
 	box-sizing: border-box;
 }
 
 body {
-    background-image: url(https://images.pexels.com/photos/990818/pexels-photo-990818.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);
-    background-repeat: no-repeat;
-    background-size: cover;
+	background: rgba(186,224,252,1);
+background: -moz-linear-gradient(-45deg, rgba(186,224,252,1) 0%, rgba(44,153,242,1) 49%, rgba(43,133,207,1) 70%, rgba(41,108,163,1) 96%);
+background: -webkit-gradient(left top, right bottom, color-stop(0%, rgba(186,224,252,1)), color-stop(49%, rgba(44,153,242,1)), color-stop(70%, rgba(43,133,207,1)), color-stop(96%, rgba(41,108,163,1)));
+background: -webkit-linear-gradient(-45deg, rgba(186,224,252,1) 0%, rgba(44,153,242,1) 49%, rgba(43,133,207,1) 70%, rgba(41,108,163,1) 96%);
+background: -o-linear-gradient(-45deg, rgba(186,224,252,1) 0%, rgba(44,153,242,1) 49%, rgba(43,133,207,1) 70%, rgba(41,108,163,1) 96%);
+background: -ms-linear-gradient(-45deg, rgba(186,224,252,1) 0%, rgba(44,153,242,1) 49%, rgba(43,133,207,1) 70%, rgba(41,108,163,1) 96%);
     
 	display: flex;
 	justify-content: center;
@@ -18,6 +20,7 @@ body {
 	height: 100vh;
 	margin: -20px 0 50px;
 }
+
 
 h1 {
 	font-weight: bold;
@@ -50,8 +53,8 @@ a {
 
 button {
 	border-radius: 20px;
-	border: 1px solid #FF4B2B;
-	background-color: #FF4B2B;
+	border: 1px solid #132a4a;
+	background-color: #132a4a;
 	color: #FFFFFF;
 	font-size: 12px;
 	font-weight: bold;
@@ -136,8 +139,6 @@ input {
 	animation: show 0.6s;
 }
 
-
-
 .overlay-container {
 	position: absolute;
 	top: 0;
@@ -166,12 +167,12 @@ input {
 
 .overlay {
 	background: rgb(117, 105, 108);
-	background: -webkit-linear-gradient(to right, #FF4B2B, #FF416C);
-	background: linear-gradient(to right, #FF4B2B, #FF416C);
+	background: -webkit-linear-gradient(to right, #75a6eb, #132a4a);
+	background: linear-gradient(to right, #75a6eb, #132a4a);
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: 0 0;
-	color: rgb(155, 15, 15);
+	color: #edf1f5;
 	position: relative;
 	left: -100%;
 	height: 100%;

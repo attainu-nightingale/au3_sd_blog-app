@@ -64,11 +64,6 @@ div.content {
   }
 }
 
-
-
-
-
-
 .bd-placeholder-img {
     font-size: 1.125rem;
     text-anchor: middle;
@@ -84,9 +79,6 @@ div.content {
     }
   }
 
-  
-
-  
 .card-img {
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
@@ -108,7 +100,6 @@ div.content {
 .card-footer {
   font-size: 0.8rem;
 }
-
 
 .card:hover {
   -webkit-box-shadow: -1px 9px 40px -12px rgba(0,0,0,0.75);

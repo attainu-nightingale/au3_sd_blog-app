@@ -1,10 +1,30 @@
-# group7_blog_app
+Technologies used
 
-1. Everyone please keep your branch name by your firstname
-2. Separate Admin and User routes are created.
-3. Individual css and js files are created and attached along with bootstrap & jquery CDN.
-3. Please create further routes or pages according to the task it will perform.
+Front-end
+1. HTML, CSS and Javascript
+2. Bootstrap
+3. JQuery
 
-Example: For posts -> `/posts`, For logout -> `/logout`
+Back-end
+1. AJAX
+2. MongoDB
+3. Handlebars
+4. Multer (Image Uploading)
+5. Quill js (Text Editor)
+6. Chart js (Analytics)
+7. Node mailer (Mailing feature)
 
-4. Everyone first work on your particular links, after everything is done we will change the index file.
+`Essential primary node modules are included already`
+
+Features
+
+1. Separate User and Admin space
+2. Admin moderation of blogs like approval, rejection and review
+3. Blog image upload facility
+
+Improvements
+
+1. Development in UI and UX
+2. Like and Dislike facility
+3. Sign Up / Sign In Form validation
+4. Forgot password feature

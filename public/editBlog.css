@@ -3,8 +3,6 @@ body{
   padding-top:0px;
 }
 
-
-
 #form-container {
     width: 800px;
   }
@@ -35,6 +33,6 @@ body{
   }
 
   #editor-container {
-    height: 400px;
+    height: 350px;
     background-color: #fff;
   }
