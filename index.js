@@ -18,6 +18,7 @@ app.use(express.static('uploads'));
 app.use(express.static('routes'));
 app.use(methodOverride('_method'));
 
+
 var url = 'mongodb+srv://BlogApp:Sa123456789@cluster0-qvfme.mongodb.net/test?retryWrites=true&w=majority';
 var db, localdb;
 app.set("view engine" , hbs);
@@ -66,4 +67,6 @@ function escapeRegex(text) {
 app.use('/admin', admin);
 app.use('/user', user);
 
+
 app.listen(3000);
+
