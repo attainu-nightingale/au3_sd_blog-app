@@ -6,13 +6,16 @@ var ObjectId = require('mongodb').ObjectId;
 var datetime = require('date-and-time');
 var multer = require('multer');
 var flash = require('connect-flash');
+var cloudinary = require('cloudinary').v2;
+var cloudinaryStorage = require('multer-storage-cloudinary');
+
 var upload = multer({ dest: 'uploads/' });
 const now = new Date();
 
 var userId ,username;
 
 
-router.use(bodyParser.urlencoded({ extended: true  }));
+router.use(bodyParser.urlencoded({ extended: true }));
 router.use(express.static('public'));
 router.use(express.static('uploads'));
 router.use(flash());
@@ -33,27 +36,25 @@ router.use(function(req , res , next){
     next();
 })
 
-
-
-
 router.get('/posts', function(req, res) {
     //This link will fetch posts from database
     var db = req.app.locals.db;
     if(req.query.search){
         const regex = new RegExp(escapeRegex(req.query.search), 'gi');
-        db.collection('Blog').find({$and:[{heading : regex} , {status : 1}]}).toArray(function(err , data){
+        db.collection('Blog').find({$or:[{$and:[{heading : regex} , {status : 1}]},{$and:[{category : regex} , {status : 1}]},{$and:[{username : regex} , {status : 1}]}]}).toArray(function(err , data){
             if(err){
                 throw err;
             }
             else{
-            res.render('home.hbs' , {data : data , layout : false , style : '/userdashboard.css'});               
+            res.render('home.hbs' , {data : data , view : false , layout : false , style : '/userdashboard.css'}); 
+
             }
         }) 
     }
     else{
-        db.collection('Blog').find({status : 1}).sort({date : -1}).limit(3).toArray(function(err , recent){ 
-        db.collection('Blog').find({status : 1}).sort({views : -1}).limit(3).toArray(function(err , mostviewd){
-            res.render('home.hbs' , {recent : recent ,mostviewd : mostviewd , layout : false , style : '/userdashboard.css' , loggedIn : req.session.loggedIn});     
+        db.collection('Blog').find({status : 1}).sort({date : -1}).limit(6).toArray(function(err , recent){ 
+        db.collection('Blog').find({status : 1}).sort({views : -1}).limit(6).toArray(function(err , mostviewd){
+            res.render('home.hbs' , {recent : recent ,mostviewd : mostviewd , view : true, layout : false , style : '/userdashboard.css' , loggedIn : req.session.loggedIn});     
         }) 
     })
     }
@@ -82,12 +83,11 @@ router.get("/posts/:id" , function(req , res){
                                 throw err;
                             else {
                                 res.render('showparticularblog.hbs' , {
-                                    title: data.heading,
                                     data : data,
                                     blogid : req.params.id,
                                     comment : commentdata,
                                     user : userdata,
-                                    date :  datetime.format(now, 'DD, MMM')});
+                                    date :  datetime.format(now, 'DD/MM/YY')});
                                 }
                             })
                         }
@@ -107,7 +107,7 @@ router.get("/posts/:id" , function(req , res){
                                     blogid : req.params.id,
                                     comment : commentdata,
                                     user : userdata,
-                                    date :  datetime.format(now, 'DD, MMM')
+                                    date :  datetime.format(now, 'DD/MM/YY')
                                 });
                             }
                         })
@@ -144,6 +144,22 @@ router.post('/posts/:id' , function(req , res) {
 
 //----------------------------- Create Blog ------------------------
 
+cloudinary.config({
+    cloud_name: 'attainu-blogapp',
+    api_key: '591487538237557',
+    api_secret: 'ASt5CtWwS_IDju7y6nLUlpxcIwM'
+});
+
+var ImgGal = multer({
+    storage: cloudinaryStorage({
+        cloudinary: cloudinary,
+        folder: 'xxx',
+        filename: function (req, file, cb) {
+            cb(undefined, file.originalname);
+        }
+    })
+});
+
 router.get("/showEditor", function(req, res) {
     res.render('postBlog.hbs', {
         title: "Post Blog",
@@ -156,31 +172,58 @@ router.get("/showEditor", function(req, res) {
 router.post('/postBlog', upload.array('ImgGal', 4), function (req, res, next) {
     var db = req.app.locals.db;
     
-    var images = [];
+    var cloud=[];
 
-    for(var i=1; i<(req.files).length; i++) {
-        images.push((req.files)[i].filename);
+    var promises = [];
+    for(var i=0; i<(req.files).length; i++) { 
+        promises[i] = new Promise(function(resolve, reject) {
+            cloudinary.uploader.upload(req.files[i].path, (error, result) => {
+                if(error) {
+                    reject();
+                    throw error;
+                }
+                if(result) {
+                    resolve();
+                    cloud.push(result.url);
+                    console.log(result.url);
+                }
+            })
+        });
     }
 
-    var posts = {
-        "username": req.session.username,
-        "userid": req.session.userId,
-        "heading": req.body.heading,
-        "headImg": (req.files)[0].filename,
-        "body": req.body.about,
-        "images": images,
-        "category": req.body.category,
-        "date": datetime.format(now, 'DD, MMMM'),
-        "status": 0,
-        "views" : 0,
-        "recentUpdate" : 1
-    }
+    Promise.all(promises).
+    then(function() {
+        console.log(cloud);
+        const now = new Date();
+        var headImg = cloud[0];
 
-    db.collection('Blog').insertOne(posts, function(error, result) {
-        if(error)
-            throw error
+        console.log(cloud, "Before Updated");
+        cloud.shift();
+        console.log(cloud, "Updated");
+
+        var posts = {
+            "username": req.session.username,
+            "userid": req.session.userId,
+            "heading": req.body.heading,
+            "headImg": headImg,
+            "body": req.body.about,
+            "images": cloud,
+            "category": req.body.category,
+            "date": datetime.format(now, 'DD/MM/YY'),
+            "status": 0,
+            "views" : 0,
+            "recentUpdate" : 1
+        }
+        db.collection('Blog').insertOne(posts, function(error, result) {
+            if(error)
+                throw error
+        });
+    }).
+    catch(function() {
+        console.log('Uploading Failed');
     });
-       res.redirect('/user/posts');
+
+    res.redirect('/user/posts');
 });
 
 
@@ -293,7 +336,7 @@ router.post('/signin' , function(req , res) {
             }
         }
         if (flag) {
-            req.flash('success'  , 'Logged In Successfully !!');
+            req.flash('success'  , 'Logged In Successfully');
             req.session.loggedIn = true;
             res.redirect('/user/posts');
         }

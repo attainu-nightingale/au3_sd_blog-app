@@ -5,9 +5,12 @@
 }
 
 body {
-    background-image: url(https://simplemachinedesigns.com/wp-content/uploads/2017/02/august_12-16-02.png);
-    background-repeat: no-repeat;
-    background-size: cover;
+	background: rgba(186,224,252,1);
+background: -moz-linear-gradient(-45deg, rgba(186,224,252,1) 0%, rgba(44,153,242,1) 49%, rgba(43,133,207,1) 70%, rgba(41,108,163,1) 96%);
+background: -webkit-gradient(left top, right bottom, color-stop(0%, rgba(186,224,252,1)), color-stop(49%, rgba(44,153,242,1)), color-stop(70%, rgba(43,133,207,1)), color-stop(96%, rgba(41,108,163,1)));
+background: -webkit-linear-gradient(-45deg, rgba(186,224,252,1) 0%, rgba(44,153,242,1) 49%, rgba(43,133,207,1) 70%, rgba(41,108,163,1) 96%);
+background: -o-linear-gradient(-45deg, rgba(186,224,252,1) 0%, rgba(44,153,242,1) 49%, rgba(43,133,207,1) 70%, rgba(41,108,163,1) 96%);
+background: -ms-linear-gradient(-45deg, rgba(186,224,252,1) 0%, rgba(44,153,242,1) 49%, rgba(43,133,207,1) 70%, rgba(41,108,163,1) 96%);
     
 	display: flex;
 	justify-content: center;
@@ -17,6 +20,7 @@ body {
 	height: 100vh;
 	margin: -20px 0 50px;
 }
+
 
 h1 {
 	font-weight: bold;

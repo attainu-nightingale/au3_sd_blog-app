@@ -1,14 +1,17 @@
-<div class="sidebar" style="position: relative;left:-15px; top:70px;">
-  <a href="/admin/">Dashboard</a>
-  <a  href="/admin/blog">Show Blogs</a>
-  <a  class="active" href="/admin/delete">Delete Blogs</a>
+<div class="sidebar" style="background-color:rgb(241,241,241);">
+    <a href="#">Home</a>
+         <a href="/admin">Dashboard</a>
+         <a href="/admin/analytics" >Analytics <br><div style="font-size: 12px;">(Sort By No. of Views On Blog)</div></a>
+         <a href="/admin/analyticsblog">Analytics <br><div style="font-size: 12px;">(Sort By No. of Blog Posted)</div></a>
+          <a href="/admin/blog">Show Blogs</a>
+           <a href="/admin/delete" class="active">Delete Blogs</a>
 </div>
- <div class="container" style="position: relative;top:-80px;left:90px;">
+ <div class="container" style="position: relative;top:80px;left:90px">
         <div class="row">
            {{#each data}}
            <div class="col-md-4">
             <div class="card" style="margin-left :10px; margin-bottom:50px;border-radius: 15px;transition: 0.3s;">
-            <img class="card-img-top" src="/{{this.headImg}}" alt="Card image cap" style="border-radius: 15px 15px 0 0;">
+            <img class="card-img-top" src="{{this.headImg}}" alt="blog image" style="border-radius: 15px 15px 0 0;" height="250px">
             <div class="card-body">
             <h5 class="card-title text-truncate" style="max-width: 270px;">
                 <font face = "Bedrock" size = "5">{{this.heading}}</font></h5>

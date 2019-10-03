@@ -119,10 +119,10 @@ router.post("/auth",function(req,res){
                     throw err;
                     else{
                         let mailoptions = {
-                            from : 'zanulsiddiquiattainu@gmail.com',
+                            from : 'blogapp.herokuapp@gmail.com',
                             to : userdata[0].email,
                             subject : 'Blog is Rejected',
-                            text : "Oops Your Blog is Rejected :( " + 
+                            text : "Sorry, your blog is rejected" + 
                              "Click Here to See Your Status http://localhost:3000/user/posts",
                         }
                         transporter.sendMail(mailoptions , function(err , suc){
@@ -151,10 +151,10 @@ router.post("/auth",function(req,res){
                    throw err;
                    else{
                        let mailoptions = {
-                           from : 'zanulsiddiquiattainu@gmail.com',
+                           from : 'blogapp.herokuapp@gmail.com',
                            to : userdata[0].email,
                            subject : 'Congrats Your Blog Is Approved ',
-                           text : "Congrulation Your Blog is Aprroved :) " + 
+                           text : "Congrulation Your Blog is Approved" + 
                             "Click Here to See Your Blog http://localhost:3000/user/posts",
                        }
                        transporter.sendMail(mailoptions , function(err , suc){
@@ -185,10 +185,10 @@ router.post("/auth",function(req,res){
                     throw err;
                     else{
                         let mailoptions = {
-                            from : 'zanulsiddiquiattainu@gmail.com',
+                            from : 'blogapp.herokuapp@gmail.com',
                             to : userdata[0].email,
                             subject : 'Changes Required to Approve the Blog',
-                            text : "Make that changes to approve your blog . Message :-" + req.body.changeRequest +  
+                            text : "Make that changes to approve your blog . Message: " + req.body.changeRequest +  
                              "  Click Here to See Your Blog http://localhost:3000/user/posts",
                         }
                         transporter.sendMail(mailoptions , function(err , suc){
@@ -243,5 +243,31 @@ router.get("/:id/delete" , function(req , res){
         }  
     })
 })
+
+//------------- Admin Anlaytics
+
+router.get('/analytics' , function(req , res){
+    var db = req.app.locals.db;
+   db.collection("Blog").aggregate([{$group : {_id : "$userid" , username : {$first : "$username"} , total : {$sum : "$views"}}}]).toArray(function(err , data){
+       if(err)
+         throw err;
+        else{
+              res.render('adminAnalytics.hbs' , {style: '/admindashboard.css' , data : data}) 
+        } 
+   })
+})
+
+
+router.get('/analyticsblog' , function(req , res){
+    var db = req.app.locals.db;
+   db.collection("Blog").aggregate([{$group : {_id : "$userid" , username : {$first : "$username"} , totalblog : {$sum : 1}}}]).toArray(function(err , data){
+       if(err)
+         throw err;
+        else{
+              res.render('adminAnalyticsblog.hbs' , {style: '/admindashboard.css' , data : data}) 
+        } 
+   })
+})
+
 
 module.exports = router;

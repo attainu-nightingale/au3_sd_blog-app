@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "cloudinary": "^1.15.0",
     "connect-flash": "^0.1.1",
     "date-and-time": "^0.9.0",
     "dotenv": "^8.1.0",
@@ -19,8 +20,9 @@
     "method-override": "^3.0.0",
     "mongodb": "^3.3.2",
     "multer": "^1.4.2",
+    "multer-storage-cloudinary": "^2.2.1",
     "nodemailer": "^6.3.0"
   },
   "devDependencies": {},
-  "description": "1. Everyone please keep your branch name by your firstname 2. Separate Admin and User routes are created. 3. Individual css and js files are created and attached along with bootstrap & jquery CDN. 3. Please create further routes or pages according to the task it will perform."
+  "description": ""
 }
